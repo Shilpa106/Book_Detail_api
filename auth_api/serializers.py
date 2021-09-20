@@ -120,26 +120,26 @@ class UserLogoutSerializer(serializers.ModelSerializer):
 
 # *User1********************************************************************************************************
 class UserSerializer1(serializers.ModelSerializer):
-    # class Meta:
-    #     model = User1
-    #     fields = '__all__'
-    email = serializers.EmailField(
-        required=True,
-        validators=[UniqueValidator(queryset=User.objects.all())]
-        )
-    username = serializers.CharField(
-        required=True,
-        validators=[UniqueValidator(queryset=User.objects.all())]
-        )
-    password = serializers.CharField(max_length=8)
-
     class Meta:
         model = User1
-        fields = (
-            'username',
-            'email',
-            'password'
-        )
+        fields = '__all__'
+    # email = serializers.EmailField(
+    #     required=True,
+    #     validators=[UniqueValidator(queryset=User.objects.all())]
+    #     )
+    # username = serializers.CharField(
+    #     required=True,
+    #     validators=[UniqueValidator(queryset=User.objects.all())]
+    #     )
+    # password = serializers.CharField(max_length=8)
+
+    # class Meta:
+    #     model = User1
+    #     fields = (
+    #         'username',
+    #         'email',
+    #         'password'
+    #     )
 
 
 class UserLoginSerializer1(serializers.ModelSerializer):
@@ -168,6 +168,11 @@ class UserLoginSerializer1(serializers.ModelSerializer):
             if not user.exists():
                 raise ValidationError("User credentials are not correct.")
             user = User1.objects.get(email=user_id)
+
+
+        # if not user.is_active:
+        #     raise ValidationError("User should not be login")
+       
         else:
             user = User1.objects.filter(
                 Q(username=user_id) &
@@ -176,14 +181,18 @@ class UserLoginSerializer1(serializers.ModelSerializer):
             if not user.exists():
                 raise ValidationError("User credentials are not correct.")
             user = User1.objects.get(username=user_id)
+
+        if not user.is_active:
+            raise ValidationError("User should be active for login")
+        print(user)
         if user.ifLogged:
             raise ValidationError("User already logged in.")
         user.ifLogged = True
 
         # *****************************************************allow permission****************************************
-        if user.is_active:
-            raise ValidationError("hey admin dashboard profilesssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
-        # print(data)
+        # if user.is_active:
+        #     raise ValidationError("hey admin dashboard profilesssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
+        # # print(data)
         # print("helloooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo")
         data['token'] = uuid4()
         # print(data)
