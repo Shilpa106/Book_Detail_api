@@ -22,9 +22,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from auth_api.views import index
+from api import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # search api
+    path('studentapi/',views.StudentList.as_view()),
+    # admin, user reg login logout
     path('api/', include('auth_api.urls')),
+    # default page
     path('', index, name="index"),
 ]

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api',
     'auth_api',
     'rest_framework',
     'rest_auth',
@@ -142,3 +143,6 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 AUTH_USER_MODEL = 'auth_api.User'
+REST_FRAMEWORK={
+    'SEARCH_PARAM':'q'
+}

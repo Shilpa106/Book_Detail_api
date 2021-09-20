@@ -5,6 +5,9 @@ from rest_framework.validators import UniqueValidator
 from .models import User,User1
 from django.core.exceptions import ValidationError
 from uuid import uuid4
+from passlib.hash import pbkdf2_sha256
+
+from django.contrib.auth.hashers import make_password
 # from rest_framework import IsActiveListSerializer
 # Admin******************************************
 
@@ -14,26 +17,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-
-
-        # *************************
-    # email = serializers.EmailField(
-    #     required=True,
-    #     validators=[UniqueValidator(queryset=User.objects.all())]
-    #     )
-    # username = serializers.CharField(
-    #     required=True,
-    #     validators=[UniqueValidator(queryset=User.objects.all())]
-    #     )
-    # password = serializers.CharField(max_length=8)
-
-    # class Meta:
-    #     model = User
-    #     fields = (
-    #         'username',
-    #         'email',
-    #         'password'
-        # )
 
 
 class UserLoginSerializer(serializers.ModelSerializer):
@@ -171,12 +154,20 @@ class IsActiveListSerializer(serializers.ListSerializer):
         data = data.filter(is_active=0)
         return super().to_representation(data)
 
+    
+
 class UserSerializer1(serializers.ModelSerializer):
+    
+
     class Meta:
         model = User1
         fields = (
-            'name','username','email','password','ifLogged','token','is_verified','is_active','is_staff','created_at','updated_at',)
+            'name','username','email','password','token','ifLogged','superuser_status','is_verified','is_active','is_staff','created_at','updated_at',)
+        write_only_fields = ['password']
+        
         list_serializer_class = IsActiveListSerializer
+        
+
 
     
 

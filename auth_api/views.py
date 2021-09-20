@@ -10,7 +10,7 @@ from .models import User,User1
 from .serializers import UserSerializer, UserLoginSerializer, UserLogoutSerializer,UserSerializer1, UserLoginSerializer1, UserLogoutSerializer1
 
 from rest_framework.filters import OrderingFilter
-
+from django.contrib.auth.hashers import make_password
 # Admin*************************************
 
 class Record(generics.ListCreateAPIView):
@@ -60,6 +60,23 @@ class Record1(generics.ListCreateAPIView):
            
     filter_backends = [OrderingFilter]
     ordering_fields = ['created_at']
+
+    def perform_create(self, serializer):
+        # Hash password but passwords are not required
+        if ('password' in self.request.data):
+            password = make_password(self.request.data['password'])
+            serializer.save(password=password)
+        else:
+            serializer.save()
+
+
+    def perform_update(self, serializer):
+        # Hash password but passwords are not required
+        if ('password' in self.request.data):
+            password = make_password(self.request.data['password'])
+            serializer.save(password=password)
+        else:
+            serializer.save()
 
    
         
