@@ -1,34 +1,39 @@
+from django.db import models
 from django.db.models import Q # for queries
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from .models import User,User1
 from django.core.exceptions import ValidationError
 from uuid import uuid4
-
+# from rest_framework import IsActiveListSerializer
 # Admin******************************************
+
+
 class UserSerializer(serializers.ModelSerializer):
     # ********************
     class Meta:
         model = User
         fields = '__all__'
-        # *************************
-    email = serializers.EmailField(
-        required=True,
-        validators=[UniqueValidator(queryset=User.objects.all())]
-        )
-    username = serializers.CharField(
-        required=True,
-        validators=[UniqueValidator(queryset=User.objects.all())]
-        )
-    password = serializers.CharField(max_length=8)
 
-    class Meta:
-        model = User
-        fields = (
-            'username',
-            'email',
-            'password'
-        )
+
+        # *************************
+    # email = serializers.EmailField(
+    #     required=True,
+    #     validators=[UniqueValidator(queryset=User.objects.all())]
+    #     )
+    # username = serializers.CharField(
+    #     required=True,
+    #     validators=[UniqueValidator(queryset=User.objects.all())]
+    #     )
+    # password = serializers.CharField(max_length=8)
+
+    # class Meta:
+    #     model = User
+    #     fields = (
+    #         'username',
+    #         'email',
+    #         'password'
+        # )
 
 
 class UserLoginSerializer(serializers.ModelSerializer):
@@ -119,27 +124,61 @@ class UserLogoutSerializer(serializers.ModelSerializer):
 
 
 # *User1********************************************************************************************************
+
+    # # user_id = serializers.CharField()
+    # name=serializers.CharField()
+    # username=serializers.CharField()
+    # email = serializers.EmailField()
+    # password = serializers.CharField()
+    # ifLogged = serializers.BooleanField()
+    # token = serializers.CharField()
+    # is_verified = serializers.BooleanField()
+    # is_active = serializers.BooleanField()
+    # is_staff = serializers.BooleanField()
+    # created_at = serializers.DateTimeField()
+    # updated_at = serializers.DateTimeField()
+    
+
+
+    # # *************************************************
+    # def validate(self, data):
+    #     # print("366666666666666666666666666666666666")
+    #     # print(data)
+    #     # user,email,password validator
+        
+    #     is_active = data.get("is_active", None)
+    #     user=User.objects.all()
+    #     if not is_active.exists():
+    #         pass
+    #     elif user.is_active:
+                        
+            
+    #         pass
+    #     else:
+    #         user.save()
+        
+    #     return data
+   
+    # # ****************************************************
+
+   
+
+    
+class IsActiveListSerializer(serializers.ListSerializer):
+
+            
+    def to_representation(self, data):
+        data = data.filter(is_active=0)
+        return super().to_representation(data)
+
 class UserSerializer1(serializers.ModelSerializer):
     class Meta:
         model = User1
-        fields = '__all__'
-    # email = serializers.EmailField(
-    #     required=True,
-    #     validators=[UniqueValidator(queryset=User.objects.all())]
-    #     )
-    # username = serializers.CharField(
-    #     required=True,
-    #     validators=[UniqueValidator(queryset=User.objects.all())]
-    #     )
-    # password = serializers.CharField(max_length=8)
+        fields = (
+            'name','username','email','password','ifLogged','token','is_verified','is_active','is_staff','created_at','updated_at',)
+        list_serializer_class = IsActiveListSerializer
 
-    # class Meta:
-    #     model = User1
-    #     fields = (
-    #         'username',
-    #         'email',
-    #         'password'
-    #     )
+    
 
 
 class UserLoginSerializer1(serializers.ModelSerializer):

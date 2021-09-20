@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'auth_api',
     'rest_framework',
     'rest_auth',
+    'django_filters',
+    'book_api'
 ]
 
 MIDDLEWARE = [

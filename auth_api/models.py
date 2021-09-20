@@ -46,14 +46,4 @@ class User1(models.Model):
         
     
 
-class Post(models.Model):
-    title = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    text = models.TextField()
-    created_on = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.title
-        
-    class Meta:
-        db_table = "Post"
