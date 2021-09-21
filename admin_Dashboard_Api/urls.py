@@ -30,6 +30,8 @@ urlpatterns = [
     path('studentapi/',views.StudentList.as_view()),
     # admin, user reg login logout
     path('api/', include('auth_api.urls')),
+    # book page
+    path('book/',include('book_api.urls')),
     # default page
     path('', index, name="index"),
 ]

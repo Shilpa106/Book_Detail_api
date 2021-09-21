@@ -1,3 +1,5 @@
+from django.urls import path
+from api import views
 urlpatterns = [
-    path('questions/', views.QuestionsAPIView.as_view())
+    path('search/', views.StudentList.as_view())
 ]

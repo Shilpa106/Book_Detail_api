@@ -10,6 +10,6 @@ class StudentList(ListAPIView):
     
     filter_backends=[SearchFilter]
     # search_fields=['city']
-    # search_fields=['name','city']
-    search_fields=['^name']
+    search_fields=['name','city']
+    # search_fields=['^name']
    
